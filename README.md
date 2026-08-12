@@ -42,6 +42,31 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
+### PostgreSQL
+
+Create the backend environment file and start PostgreSQL from the project root:
+
+```sh
+cp backend/.env.example backend/.env
+docker compose up -d postgres
+```
+
+Check that the database container is healthy:
+
+```sh
+docker compose ps
+```
+
+PostgreSQL is available locally on port `5432`. Its data is retained in the
+`postgres_data` Docker volume. The FastAPI health endpoint checks the database
+with a lightweight query and reports `"database": "online"` when connected.
+
+To stop PostgreSQL without deleting its data:
+
+```sh
+docker compose stop postgres
+```
+
 The health endpoint is available at `http://localhost:8000/health` and the
 interactive API documentation at `http://localhost:8000/docs`.
 
