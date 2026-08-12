@@ -37,7 +37,7 @@ export default function Search() {
             <p className="text-gray-600 mb-8">
               Find your perfect recipe from our collection
             </p>
-            
+
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto">
               <div className="relative">
@@ -78,7 +78,7 @@ export default function Search() {
                 {query && (
                   <div className="text-center">
                     <p className="text-gray-600">
-                      Found {filtered.length} recipe{filtered.length !== 1 ? 's' : ''} 
+                      Found {filtered.length} recipe{filtered.length !== 1 ? 's' : ''}
                       {filtered.length === 20 && ' (showing first 20)'}
                     </p>
                   </div>
