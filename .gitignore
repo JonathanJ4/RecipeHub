@@ -7,17 +7,20 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+node_modules/
 dist
 dist-ssr
 *.local
 
 # Environment variables
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
+!**/.env.example
+
+# Python-generated files
+__pycache__/
+*.py[cod]
 
 # Editor directories and files
 .vscode/*
@@ -29,3 +32,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+RECIPE_HUB_REBUILD_ROADMAP.md
+RECIPE_HUB_SECOND_PASS_CLEANUP.md

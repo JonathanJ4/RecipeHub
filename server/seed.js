@@ -1,4 +1,3 @@
-// server/seed.js
 import fs from 'fs';
 import path from 'path';
 import mongoose from 'mongoose';
@@ -28,25 +27,22 @@ async function seed() {
         let ingList = [];
         if (row.Cleaned_Ingredients) {
           try {
-            ingList = JSON.parse(
-              row.Cleaned_Ingredients.replace(/'/g, '"')
-            );
-          } catch (err) {
-            // skip on parse error
+            ingList = JSON.parse(row.Cleaned_Ingredients.replace(/'/g, '"'));
+          } catch {
+            // Leave ingredients empty if the field cannot be parsed.
           }
         }
 
         recipes.push({
-          title:       row.Title.trim(),
+          title: row.Title.trim(),
           description: row.Instructions.trim().slice(0, 300),
           instructions: row.Instructions.trim(),
           image: row.Image_Name
-                 ? `https://recipehub-images.s3.us-east-1.amazonaws.com/${row.Image_Name}.jpg`
-                 : '',
-
-          mealType:    '',                     // leave blank for now
-          popularity:  ingList.length,
-          ingredients: ingList
+            ? `https://recipehub-images.s3.us-east-1.amazonaws.com/${row.Image_Name}.jpg`
+            : '',
+          mealType: '',
+          popularity: ingList.length,
+          ingredients: ingList,
         });
       })
       .on('end', () => {

@@ -1,4 +1,3 @@
-// src/components/Hero.jsx
 export default function Hero() {
   return (
     <section className="bg-olive-light border-b-4 border-olive">

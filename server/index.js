@@ -7,13 +7,10 @@ import Recipe from './models/Recipe.js';
 // Load any environment variables from server/.env
 dotenv.config();
 
-
-
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB connected (Atlas)'))
   .catch(err => console.error('❌ MongoDB connection error:', err));
-
 
 const app = express();
 app.use('/images', express.static('public/images'));
@@ -64,6 +61,7 @@ app.get('/recipes/:id', async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+
 // POST a new recipe
 app.post('/recipes', async (req, res) => {
   try {
@@ -74,16 +72,7 @@ app.post('/recipes', async (req, res) => {
   }
 });
 
-
-// Placeholder for later routes (e.g. /recipes)
-// app.use('/recipes', require('./routes/recipes'));
-
-
-
-
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server listening on http://localhost:${PORT}`);
 });
-
