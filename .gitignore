@@ -22,6 +22,7 @@ coverage/
 # Python-generated files
 __pycache__/
 *.py[cod]
+.venv/
 
 # Editor directories and files
 .vscode/*

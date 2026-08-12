@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import ApiHealth from './ApiHealth.jsx';
 
 export default function Header() {
   return (
@@ -8,7 +9,8 @@ export default function Header() {
           <span role="img" aria-label="fork and knife"></span>
           <span className="ml-2">Recipe Hub</span>
         </Link>
-        <nav className="space-x-4">
+        <nav className="flex items-center gap-4">
+          <ApiHealth />
           <Link
             to="/"
             className="px-3 py-1 rounded hover:bg-olive-light hover:text-olive transition"
