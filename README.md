@@ -93,6 +93,7 @@ interactive API documentation at `http://localhost:8000/docs`.
 - `GET /recipes/{id}` returns one recipe or `404` when it is missing.
 - `GET /recipes/search?q=chicken&limit=20&offset=0` searches titles,
   instructions, and ingredients without case sensitivity.
+- `GET /images/{image_name}.jpg` serves recipe images from FastAPI.
 
 The React app reads the FastAPI URL from `VITE_API_URL`, which defaults to
 `http://localhost:8000`. Copy `.env.example` to `.env` to override it.

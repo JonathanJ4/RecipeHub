@@ -1,14 +1,19 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import AsyncIterator
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.exc import SQLAlchemyError
 
 from .config import settings
 from .database import close_database, database_is_available
 from .routers import recipes_router
+
+
+IMAGES_DIRECTORY = Path(__file__).resolve().parent.parent / "static" / "images"
 
 
 @asynccontextmanager
@@ -33,6 +38,7 @@ app.add_middleware(
 )
 
 app.include_router(recipes_router)
+app.mount("/images", StaticFiles(directory=IMAGES_DIRECTORY), name="images")
 
 
 @app.get("/health", tags=["Health"])

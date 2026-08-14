@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Header from '../components/Header.jsx';
-import { fetchJson } from '../lib/api.js';
+import { fetchJson, getRecipeImageUrl } from '../lib/api.js';
 
 export default function RecipeDetail() {
   const { id } = useParams();
@@ -32,6 +32,8 @@ export default function RecipeDetail() {
     );
   }
 
+  const imageUrl = getRecipeImageUrl(recipe);
+
   return (
     <>
       <Header />
@@ -40,9 +42,9 @@ export default function RecipeDetail() {
         <h1 className="text-4xl font-bold">{recipe.title}</h1>
 
         {/* 2. Image */}
-        {recipe.image_url && (
+        {imageUrl && (
           <img
-            src={recipe.image_url}
+            src={imageUrl}
             alt={recipe.title}
             className="w-full h-64 object-cover rounded-lg"
           />

@@ -1,17 +1,19 @@
 import { Link } from 'react-router-dom';
+import { getRecipeImageUrl } from '../lib/api.js';
 
 export default function RecipeCard({ recipe }) {
   const preview = (recipe.ingredients || []).slice(0, 3);
+  const imageUrl = getRecipeImageUrl(recipe);
 
   return (
     <Link
       to={`/recipe/${recipe.id}`}
       className="block bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
     >
-      {recipe.image_url ? (
+      {imageUrl ? (
         <img
           className="w-full h-40 object-cover"
-          src={recipe.image_url}
+          src={imageUrl}
           alt={recipe.title}
         />
       ) : (
