@@ -1,6 +1,6 @@
 import Header from '../components/Header.jsx';
 import Hero from '../components/Hero.jsx';
-import TrendingRecipes from '../components/TrendingRecipes.jsx';
+import FeaturedRecipes from '../components/FeaturedRecipes.jsx';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
@@ -8,7 +8,7 @@ export default function Home() {
     <>
       <Header />
       <Hero />
-      <TrendingRecipes />
+      <FeaturedRecipes />
 
       {/* Call to Action */}
       <section className="bg-white">

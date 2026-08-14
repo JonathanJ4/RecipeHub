@@ -1,8 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Header from '../components/Header.jsx';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+import { fetchJson } from '../lib/api.js';
 
 export default function RecipeDetail() {
   const { id } = useParams();
@@ -10,11 +9,7 @@ export default function RecipeDetail() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(`${API_URL}/recipes/${id}`)
-      .then(res => {
-        if (!res.ok) throw new Error('Recipe not found');
-        return res.json();
-      })
+    fetchJson(`/recipes/${id}`)
       .then(data => setRecipe(data))
       .catch(err => setError(err.message));
   }, [id]);
@@ -45,22 +40,15 @@ export default function RecipeDetail() {
         <h1 className="text-4xl font-bold">{recipe.title}</h1>
 
         {/* 2. Image */}
-        {recipe.image && (
+        {recipe.image_url && (
           <img
-            src={recipe.image}
+            src={recipe.image_url}
             alt={recipe.title}
             className="w-full h-64 object-cover rounded-lg"
           />
         )}
 
-        {/* 3. Short teaser (description) */}
-        {recipe.description && (
-          <p className="text-gray-700 italic">
-            {recipe.description}
-          </p>
-        )}
-
-        {/* 4. Ingredients */}
+        {/* 3. Ingredients */}
         {recipe.ingredients?.length > 0 && (
           <section>
             <h2 className="text-2xl font-semibold mb-2">Ingredients</h2>
@@ -72,7 +60,7 @@ export default function RecipeDetail() {
           </section>
         )}
 
-        {/* 5. Full instructions */}
+        {/* 4. Full instructions */}
         {recipe.instructions && (
           <section>
             <h2 className="text-2xl font-semibold mb-2">Instructions</h2>
@@ -81,12 +69,6 @@ export default function RecipeDetail() {
             </p>
           </section>
         )}
-
-        {/* 6. Meta info */}
-        <div className="flex space-x-4 text-sm text-gray-600">
-          <span>Meal Type: {recipe.mealType || '—'}</span>
-          <span>Popularity: {recipe.popularity}</span>
-        </div>
       </main>
     </>
   );

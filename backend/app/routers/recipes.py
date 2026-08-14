@@ -21,7 +21,10 @@ async def get_recipes(
 ) -> list[Recipe]:
     """Return recipes in stable ID order with offset pagination."""
     result = await session.scalars(
-        select(Recipe).order_by(Recipe.id).offset(offset).limit(limit)
+        select(Recipe)
+        .order_by(Recipe.id)
+        .offset(offset)
+        .limit(limit)
     )
     return list(result)
 

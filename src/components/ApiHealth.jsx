@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-
-const FASTAPI_URL = import.meta.env.VITE_FASTAPI_URL || 'http://localhost:8000';
+import { fetchJson } from '../lib/api.js';
 
 export default function ApiHealth() {
   const [status, setStatus] = useState('checking');
@@ -10,15 +9,9 @@ export default function ApiHealth() {
 
     async function checkHealth() {
       try {
-        const response = await fetch(`${FASTAPI_URL}/health`, {
+        const data = await fetchJson('/health', {
           signal: controller.signal,
         });
-
-        if (!response.ok) {
-          throw new Error(`Health check failed with status ${response.status}`);
-        }
-
-        const data = await response.json();
         setStatus(data.status === 'ok' ? 'online' : 'offline');
       } catch (error) {
         if (error.name !== 'AbortError') {

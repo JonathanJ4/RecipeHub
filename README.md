@@ -1,7 +1,6 @@
 # Recipe Hub
 
-Recipe Hub is a React recipe application. A FastAPI backend is being introduced
-alongside the existing Express and MongoDB backend.
+Recipe Hub is a React recipe application backed by FastAPI and PostgreSQL.
 
 ## Current Stack
 
@@ -9,8 +8,7 @@ alongside the existing Express and MongoDB backend.
 - Vite
 - Tailwind CSS
 - FastAPI
-- Express
-- MongoDB / Mongoose
+- PostgreSQL / SQLAlchemy
 - AWS S3 for recipe images
 
 ## Running Locally
@@ -96,20 +94,8 @@ interactive API documentation at `http://localhost:8000/docs`.
 - `GET /recipes/search?q=chicken&limit=20&offset=0` searches titles,
   instructions, and ingredients without case sensitivity.
 
-The React app reads the FastAPI URL from `VITE_FASTAPI_URL`, which defaults to
+The React app reads the FastAPI URL from `VITE_API_URL`, which defaults to
 `http://localhost:8000`. Copy `.env.example` to `.env` to override it.
-
-### Existing Express backend
-
-```sh
-cd server
-npm install
-npm start
-```
-
-The Express backend requires environment variables defined in `server/.env`.
-
-See `server/.env.example` for the required variables.
 
 ## Project Status
 

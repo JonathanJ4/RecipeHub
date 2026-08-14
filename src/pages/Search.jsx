@@ -1,28 +1,51 @@
 import { useState, useEffect } from 'react';
 import Header from '../components/Header.jsx';
 import RecipeCard from '../components/RecipeCard.jsx';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+import { fetchJson } from '../lib/api.js';
 
 export default function Search() {
-  const [recipes, setRecipes] = useState(null);
+  const [recipes, setRecipes] = useState([]);
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch(`${API_URL}/recipes`)
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch recipes');
-        return res.json();
-      })
-      .then(data => setRecipes(data))
-      .catch(err => setError(err.message));
-  }, []);
+    const searchTerm = query.trim();
+    if (!searchTerm) {
+      setRecipes([]);
+      setError('');
+      setLoading(false);
+      return undefined;
+    }
 
-  // Filter and limit results
-  const filtered = (recipes || []).filter(r =>
-    r.title.toLowerCase().includes(query.toLowerCase())
-  ).slice(0, 20);
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(async () => {
+      setLoading(true);
+      setError('');
+
+      try {
+        const params = new URLSearchParams({ q: searchTerm, limit: '20' });
+        const data = await fetchJson(`/recipes/search?${params}`, {
+          signal: controller.signal,
+        });
+        setRecipes(data);
+      } catch (requestError) {
+        if (requestError.name !== 'AbortError') {
+          setError(requestError.message);
+          setRecipes([]);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }, 300);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [query]);
 
   return (
     <>
@@ -67,7 +90,7 @@ export default function Search() {
               </div>
             )}
 
-            {!recipes ? (
+            {loading ? (
               <div className="text-center py-16">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-olive mx-auto mb-4"></div>
                 <p className="text-gray-600">Loading recipes...</p>
@@ -78,17 +101,17 @@ export default function Search() {
                 {query && (
                   <div className="text-center">
                     <p className="text-gray-600">
-                      Found {filtered.length} recipe{filtered.length !== 1 ? 's' : ''}
-                      {filtered.length === 20 && ' (showing first 20)'}
+                      Found {recipes.length} recipe{recipes.length !== 1 ? 's' : ''}
+                      {recipes.length === 20 && ' (showing first 20)'}
                     </p>
                   </div>
                 )}
 
                 {/* Results Grid */}
-                {filtered.length > 0 ? (
+                {recipes.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {filtered.map(r => (
-                      <RecipeCard key={r._id} recipe={r} />
+                    {recipes.map(r => (
+                      <RecipeCard key={r.id} recipe={r} />
                     ))}
                   </div>
                 ) : query ? (
