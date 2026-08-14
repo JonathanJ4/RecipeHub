@@ -70,6 +70,16 @@ python -m alembic upgrade head
 The current schema stores each recipe in one `recipes` table. Ingredients are
 stored as PostgreSQL JSONB and instructions as text.
 
+Import the Kaggle recipe dataset into an empty `recipes` table:
+
+```sh
+python -m scripts.import_recipes
+```
+
+The importer ignores the CSV's exported index column, stores the original
+`Ingredients` lists as JSONB, skips incomplete rows, and aborts if the table
+already contains data.
+
 To stop PostgreSQL without deleting its data:
 
 ```sh
