@@ -67,8 +67,8 @@ Apply database schema migrations from the `backend` directory:
 python -m alembic upgrade head
 ```
 
-The initial migration creates `recipes`, `recipe_steps`, `ingredients`, and
-`recipe_ingredients` with their foreign keys and data-integrity constraints.
+The current schema stores each recipe in one `recipes` table. Ingredients are
+stored as PostgreSQL JSONB and instructions as text.
 
 To stop PostgreSQL without deleting its data:
 
