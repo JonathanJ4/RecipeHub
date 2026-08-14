@@ -8,6 +8,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from .config import settings
 from .database import close_database, database_is_available
+from .routers import recipes_router
 
 
 @asynccontextmanager
@@ -30,6 +31,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(recipes_router)
 
 
 @app.get("/health", tags=["Health"])

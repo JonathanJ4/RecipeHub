@@ -89,6 +89,13 @@ docker compose stop postgres
 The health endpoint is available at `http://localhost:8000/health` and the
 interactive API documentation at `http://localhost:8000/docs`.
 
+### Recipe API endpoints
+
+- `GET /recipes?limit=20&offset=0` returns a paginated recipe list.
+- `GET /recipes/{id}` returns one recipe or `404` when it is missing.
+- `GET /recipes/search?q=chicken&limit=20&offset=0` searches titles,
+  instructions, and ingredients without case sensitivity.
+
 The React app reads the FastAPI URL from `VITE_FASTAPI_URL`, which defaults to
 `http://localhost:8000`. Copy `.env.example` to `.env` to override it.
 
