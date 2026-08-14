@@ -61,6 +61,15 @@ PostgreSQL is available locally on port `5432`. Its data is retained in the
 `postgres_data` Docker volume. The FastAPI health endpoint checks the database
 with a lightweight query and reports `"database": "online"` when connected.
 
+Apply database schema migrations from the `backend` directory:
+
+```sh
+python -m alembic upgrade head
+```
+
+The initial migration creates `recipes`, `recipe_steps`, `ingredients`, and
+`recipe_ingredients` with their foreign keys and data-integrity constraints.
+
 To stop PostgreSQL without deleting its data:
 
 ```sh
