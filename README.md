@@ -24,21 +24,12 @@ npm run dev
 
 ```sh
 cd backend
-python -m venv .venv
+uv sync
+uv run fastapi dev
 ```
 
-Activate the virtual environment on Windows:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
-
-Then install and run the API:
-
-```sh
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
-```
+`uv sync` creates the project environment and installs the locked dependencies.
+No manual virtual-environment activation is required.
 
 ### PostgreSQL
 
@@ -62,7 +53,7 @@ with a lightweight query and reports `"database": "online"` when connected.
 Apply database schema migrations from the `backend` directory:
 
 ```sh
-python -m alembic upgrade head
+uv run alembic upgrade head
 ```
 
 The current schema stores each recipe in one `recipes` table. Ingredients are
@@ -71,7 +62,7 @@ stored as PostgreSQL JSONB and instructions as text.
 Import the Kaggle recipe dataset into an empty `recipes` table:
 
 ```sh
-python -m scripts.import_recipes
+uv run python -m scripts.import_recipes
 ```
 
 The importer ignores the CSV's exported index column, stores the original
