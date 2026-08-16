@@ -5,7 +5,7 @@ from sqlalchemy import select
 
 from app.database import async_session_factory, close_database
 from app.models import Recipe
-from app.rag.embeddings import create_embeddings
+from app.rag.embeddings import create_document_embeddings
 
 
 TEST_LIMIT = 15
@@ -36,8 +36,18 @@ async def generate_embeddings(limit: int = TEST_LIMIT) -> None:
             print("No recipes without embeddings were found.")
             return
 
-        for number, recipe in enumerate(recipes, start=1):
-            recipe.embedding = await create_embeddings(recipe_to_text(recipe))
+        documents = [recipe_to_text(recipe) for recipe in recipes]
+        embeddings = create_document_embeddings(
+            documents,
+            batch_size=4,
+            show_progress_bar=True,
+        )
+
+        for number, (recipe, embedding) in enumerate(
+            zip(recipes, embeddings, strict=True),
+            start=1,
+        ):
+            recipe.embedding = embedding
             print(f"Embedded {number}/{len(recipes)}: {recipe.title}")
 
         await session.commit()
