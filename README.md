@@ -69,6 +69,16 @@ The importer ignores the CSV's exported index column, stores the original
 `Ingredients` lists as JSONB, skips incomplete rows, and aborts if the table
 already contains data.
 
+Generate Qwen embeddings for the next 15 recipes whose embedding is missing:
+
+```sh
+uv run python -m app.rag.generate_embeddings
+```
+
+The first run downloads `Qwen/Qwen3-Embedding-0.6B`. Use `--limit` and
+`--batch-size` to override the defaults. Re-running the command safely moves on
+to recipes whose `embedding` is still `NULL`.
+
 To stop PostgreSQL without deleting its data:
 
 ```sh
