@@ -1,4 +1,6 @@
 from ..database import get_database_session
+from embeddings import embed_text
 
-
-def creating 
+def generate_embeddings():
+    
+    
