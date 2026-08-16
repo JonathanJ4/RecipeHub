@@ -1,8 +1,5 @@
-from datetime import datetime
-
-from sqlalchemy import DateTime, Integer, Text, func
+from sqlalchemy import Column, DateTime, Integer, Text, func
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, mapped_column
 from pgvector.sqlalchemy import Vector
 
 from ..database import Base
@@ -11,14 +8,14 @@ from ..database import Base
 class Recipe(Base):
     __tablename__ = "recipes"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    title: Mapped[str] = mapped_column(Text, nullable=False)
-    ingredients: Mapped[list] = mapped_column(JSONB, nullable=False)
-    instructions: Mapped[str] = mapped_column(Text, nullable=False)
-    image_name: Mapped[str] = mapped_column(Text, nullable=False)
-    image_url: Mapped[str | None] = mapped_column(Text, nullable=True)
-    embedding: Mapped[list[float] | None] = mapped_column(Vector(1024), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(
+    id = Column(Integer, primary_key=True)
+    title = Column(Text, nullable=False)
+    ingredients = Column(JSONB, nullable=False)
+    instructions = Column(Text, nullable=False)
+    image_name = Column(Text, nullable=False)
+    image_url = Column(Text, nullable=True)
+    embedding = Column(Vector(1024), nullable=True)
+    created_at = Column(
         DateTime(timezone=False),
         nullable=False,
         server_default=func.now(),

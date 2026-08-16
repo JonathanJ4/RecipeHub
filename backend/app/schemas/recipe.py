@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
 class RecipeResponse(BaseModel):
@@ -12,4 +12,4 @@ class RecipeResponse(BaseModel):
     image_url: str | None
     created_at: datetime
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = {"from_attributes": True}
