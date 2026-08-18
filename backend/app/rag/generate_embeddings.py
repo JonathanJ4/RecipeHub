@@ -17,9 +17,10 @@ async def generate_embeddings():
                     .limit(LIMIT)
                 )
         recipes= result.all()
-        
+        text = []
         for recipe in recipes:
-            text = f"{recipe.title} {recipe.ingredients} {recipe.instructions}"            
+            tex = f"{recipe.title} {recipe.ingredients} {recipe.instructions}"            
+            text.append(tex)
             recipe.embedding = embed_text(text)
             
         
