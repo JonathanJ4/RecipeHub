@@ -8,13 +8,13 @@ import asyncio
 
     
     
-limit= 5
+LIMIT = 25
 async def generate_embeddings():
     async with async_session_factory() as session:
         result = await session.scalars(
                     select(Recipe)
                     .order_by(Recipe.id)
-                    .limit(limit)
+                    .limit(LIMIT)
                 )
         recipes= result.all()
         
