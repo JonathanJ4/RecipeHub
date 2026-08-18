@@ -1,7 +1,7 @@
 from .embeddings import embed_text
 from ..database import async_session_factory
 from ..models.recipe import Recipe
-from sqlalchemy import select
+from sqlalchemy import select 
 import asyncio
 
 
@@ -13,6 +13,7 @@ async def generate_embeddings():
     async with async_session_factory() as session:
         result = await session.scalars(
                     select(Recipe)
+                    .where(Recipe.embedding.is_(None))
                     .order_by(Recipe.id)
                     .limit(LIMIT)
                 )
