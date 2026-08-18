@@ -7,5 +7,5 @@ model = SentenceTransformer("Qwen/Qwen3-Embedding-0.6B")
 def embed_text(text:str) -> list[float]: 
     embeddings = model.encode(text)
     
-    return embeddings 
+    return embeddings.tolist() 
 

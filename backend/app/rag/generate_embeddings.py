@@ -18,5 +18,6 @@ async def generate_embeddings():
             text += f"{recipe.title} {recipe.ingredients} {recipe.instructions}"            
             recipe.embedding = embed_text(text)
             
-            await session.add()
+        
+        await session.commit()
     
