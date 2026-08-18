@@ -1,9 +1,7 @@
+from .embeddings import embed_text
 from ..database import async_session_factory
-from embeddings import embed_text
-from models import Recipe
-from sqlalchemy import Text, cast, or_, select
-from sqlalchemy import Text, cast, or_, select
-
+from ..models.recipe import Recipe
+from sqlalchemy import select
 
 limit= 5
 async def generate_embeddings():
@@ -12,9 +10,13 @@ async def generate_embeddings():
                     select(Recipe)
                     .order_by(Recipe.id)
                     .limit(limit)
-                ).all()
-        text=""
-        for recipe in result:
+                )
+        recipes= result.all()
+        
+        for recipe in recipes:
+            text=""
             text += f"{recipe.title} {recipe.ingredients} {recipe.instructions}"            
-            embed_text(text)
+            recipe.embedding = embed_text(text)
+            
+            await session.add()
     
