@@ -8,7 +8,7 @@ print("Embedding model loaded.")
 
 
 def embed_text(texts:list[str]) -> list[list[float]]: 
-    embeddings = model.encode(texts,batch_size=5)
+    embeddings = model.encode(texts,batch_size=5,show_progress_bar=True,)
     if embeddings.shape[1] != 1024:
         raise ValueError("Expected 1024-dimensional embeddings")
     

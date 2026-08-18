@@ -18,13 +18,17 @@ async def generate_embeddings():
                     .limit(LIMIT)
                 )
         recipes= result.all()
-        text = []
+        texts = []
         for recipe in recipes:
-            tex = f"{recipe.title} {recipe.ingredients} {recipe.instructions}"            
+            text = f"{recipe.title} {recipe.ingredients} {recipe.instructions}"            
             text.append(tex)
-            recipe.embedding = embed_text(text)
-            
         
+            
+        embeddings = embed_text(texts)
+
+        for recipe, embedding in zip(recipes, embeddings):
+            recipe.embedding = embedding
+            
         await session.commit()
 
 if __name__ == "__main__":
