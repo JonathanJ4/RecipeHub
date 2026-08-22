@@ -7,7 +7,6 @@ import asyncio
 
 
     
-    
 LIMIT = 25
 async def generate_embeddings():
     async with async_session_factory() as session:
