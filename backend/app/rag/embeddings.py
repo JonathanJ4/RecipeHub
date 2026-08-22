@@ -1,8 +1,16 @@
 from sentence_transformers import SentenceTransformer
+import sys
+import torch
+
+print("PYTHON:", sys.executable)
+print("TORCH:", torch.__version__)
+print("TORCH PATH:", torch.__file__)
+print("CUDA:", torch.cuda.is_available())
+print("GPU:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "NONE")
 
 print("Loading embedding model...")
 
-model = SentenceTransformer("Qwen/Qwen3-Embedding-0.6B")
+model = SentenceTransformer("Qwen/Qwen3-Embedding-0.6B",device="cuda")
 
 print("Embedding model loaded.")
 

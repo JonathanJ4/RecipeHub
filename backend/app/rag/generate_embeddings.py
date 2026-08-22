@@ -21,7 +21,7 @@ async def generate_embeddings():
         texts = []
         for recipe in recipes:
             text = f"{recipe.title} {recipe.ingredients} {recipe.instructions}"            
-            text.append(tex)
+            texts.append(text)
         
             
         embeddings = embed_text(texts)
