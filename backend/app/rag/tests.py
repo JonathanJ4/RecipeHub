@@ -2,10 +2,11 @@ from .embeddings import embed_text
 from ..database import async_session_factory
 from sqlalchemy import select
 from ..models.recipe import Recipe
+import asyncio
 
 async def testingembeddings():
         query  = " chicken"
-        embeded_query = embed_text(query)[0]
+        embeded_query = embed_text([query])[0]
         
         async with async_session_factory() as session:
                 result = await session.scalars(
@@ -14,5 +15,11 @@ async def testingembeddings():
                             .order_by(Recipe.embedding.cosine_distance(embeded_query))
                             .limit(5)
                         )
+        print(result.all())
+        return result.all()
         
-    
+  
+
+
+if __name__ == "__main__":
+    asyncio.run(testingembeddings())  

@@ -22,3 +22,10 @@ def embed_text(texts:list[str]) -> list[list[float]]:
     
     return embeddings.tolist() 
 
+def embed_queries(query:str) -> list[float]:
+    embedding = model.encode(
+        [query],
+        prompt_name="query",
+    )
+
+    return embedding[0].tolist()
