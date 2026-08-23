@@ -1,12 +1,12 @@
-from .embeddings import embed_text
+from .embeddings import embed_queries
 from ..database import async_session_factory
 from sqlalchemy import select
 from ..models.recipe import Recipe
 import asyncio
 
 async def testingembeddings():
-        query  = " chicken"
-        embeded_query = embed_text([query])[0]
+        query  = "What can I make with chicken and brocolli"
+        embeded_query = embed_queries(query)
         
         async with async_session_factory() as session:
                 result = await session.scalars(
