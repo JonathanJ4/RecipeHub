@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from .config import settings
 from .database import database_is_available
 from .routers.recipes import router as recipes_router
-
+from .routers.ask import router as ask_router
 
 IMAGES_DIRECTORY = Path(__file__).resolve().parent.parent / "static" / "images"
 
@@ -26,7 +26,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 app.include_router(recipes_router)
+app.include_router(ask_router)
 app.mount("/images", StaticFiles(directory=IMAGES_DIRECTORY), name="images")
 
 

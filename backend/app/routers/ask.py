@@ -1,5 +1,5 @@
-from rag.retrieval import retrieval
-from rag.generation import generation
+from ..rag.retrieval import retrieval
+from ..rag.generation import generation
 from ..schemas.ask import AskRequest,AskResponse
 from fastapi import APIRouter
 

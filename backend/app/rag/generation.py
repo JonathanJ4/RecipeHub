@@ -28,4 +28,4 @@ async def generation(query,queries:list[dict]):
                 headers=headers,
                 json=body
         )
-        print(response.json()['output'][0]['content'])
+        return (response.json()['output'][0]['content'])
