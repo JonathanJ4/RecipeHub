@@ -4,7 +4,7 @@ from sqlalchemy import select
 from ..models.recipe import Recipe
 
 
-async def testingembeddings():
+async def retrieval(query:str):
         
         embeded_query = embed_queries(query)
         

@@ -1,0 +1,31 @@
+import requests 
+
+
+
+async def get_response(query,queries:list[dict]):
+        base_url =  "http://127.0.0.1:1234/api/v1/chat"
+
+        headers = {
+                "Content-Type": "application/json"
+}
+
+        body = {
+        "model": "qwen/qwen3-8b",
+        "input": [
+                {
+                        "type":"text",
+                        "content":f"""  
+
+                                Retrieved chunks: {queries}
+                                User_query: {query}     
+                        """
+                }
+        ],
+        "system_prompt": "Answer the users question using the retrieved content"
+}
+        response = requests.post(
+                base_url,
+                headers=headers,
+                json=body
+        )
+        print(response.text)
