@@ -10,4 +10,4 @@ async def ask(request:AskRequest):
     retrieved_recipes = await retrieval(request.query)
     response = await generation(request.query, retrieved_recipes)
     
-    return response
+    return {"answer":response}
