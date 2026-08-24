@@ -7,4 +7,4 @@ class AskRequest(BaseModel):
 
 class AskResponse(BaseModel):
     answer: str
-    recipes: list[RecipeResponse]
+    
