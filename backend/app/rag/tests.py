@@ -3,9 +3,19 @@ from ..database import async_session_factory
 from sqlalchemy import select
 from ..models.recipe import Recipe
 import asyncio
+import requests 
+
+ 
+
+
+
+
+                
+                
+query  = "What can I make with chicken and brocolli"            
 
 async def testingembeddings():
-        query  = "What can I make with chicken and brocolli"
+        
         embeded_query = embed_queries(query)
         
         async with async_session_factory() as session:
@@ -15,11 +25,38 @@ async def testingembeddings():
                             .order_by(Recipe.embedding.cosine_distance(embeded_query))
                             .limit(5)
                         )
-        print(result.all())
+        
         return result.all()
         
-  
 
+base_url =  "http://127.0.0.1:1234/api/v1/chat"
+
+headers = {
+        "Content-Type": "application/json"
+}
+
+body = {
+        "model": "qwen/qwen3-8b",
+        "input": [
+                {
+                        "type":"message",
+                        "content":f"""  
+
+                                Retrieved chunks: {testingembeddings()}
+                                User_query: {query}     
+                        """
+                }
+        ],
+        "system_prompt": "Answer the users question using the retrieved content"
+}
+
+def get_response():
+        response = requests.post(
+                base_url,
+                headers=headers,
+                json=body
+        )
+        print(response)
 
 if __name__ == "__main__":
-    asyncio.run(testingembeddings())  
+    get_response() 
