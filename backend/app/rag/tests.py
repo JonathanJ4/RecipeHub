@@ -29,28 +29,29 @@ async def testingembeddings():
         return result.all()
         
 
-base_url =  "http://127.0.0.1:1234/api/v1/chat"
 
-headers = {
-        "Content-Type": "application/json"
+
+async def get_response():
+        base_url =  "http://127.0.0.1:1234/api/v1/chat"
+
+        headers = {
+                "Content-Type": "application/json"
 }
 
-body = {
+        body = {
         "model": "qwen/qwen3-8b",
         "input": [
                 {
                         "type":"message",
                         "content":f"""  
 
-                                Retrieved chunks: {testingembeddings()}
+                                Retrieved chunks: {await testingembeddings()}
                                 User_query: {query}     
                         """
                 }
         ],
         "system_prompt": "Answer the users question using the retrieved content"
 }
-
-def get_response():
         response = requests.post(
                 base_url,
                 headers=headers,
@@ -59,4 +60,4 @@ def get_response():
         print(response)
 
 if __name__ == "__main__":
-    get_response() 
+    asyncio.run(get_response()) 
