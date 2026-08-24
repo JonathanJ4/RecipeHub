@@ -42,7 +42,7 @@ async def get_response():
         "model": "qwen/qwen3-8b",
         "input": [
                 {
-                        "type":"message",
+                        "type":"text",
                         "content":f"""  
 
                                 Retrieved chunks: {await testingembeddings()}
@@ -57,7 +57,7 @@ async def get_response():
                 headers=headers,
                 json=body
         )
-        print(response)
+        print(response.text)
 
 if __name__ == "__main__":
     asyncio.run(get_response()) 
