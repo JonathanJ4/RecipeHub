@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from .recipe import RecipeResponse
+
 
 class AskRequest(BaseModel):
     query: str
@@ -8,3 +8,5 @@ class AskRequest(BaseModel):
 class AskResponse(BaseModel):
     answer: str
     
+    
+    model_config = {"from_attributes": True}
