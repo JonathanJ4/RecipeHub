@@ -10,7 +10,7 @@ export default function Ask(){
     const [error, setError] = useState('');
 
 
-    async function handle_submit(){
+    async function handle_submit(event){
 
         event.preventDefault();
         
@@ -35,5 +35,27 @@ export default function Ask(){
         setLoading(false);
     }
     }
+
+
+    return (
+        <>
+            <Header/>
+
+            <main className="min-h-screen bg-gray-50 px-4 py-12" >
+                <div classname="max-w-2xl mx-auto">
+                    <h1 classname= "text-3xl font bold mb-6">
+                        Ask Recipe Hub
+                    </h1>
+
+                    <form onSubmit={handle_submit}>
+                        <input type="text" value ={query} onChange={event => setQuery(event.target.value)}/>
+                    </form>
+                </div>
+
+            </main>
+
+        </>
+
+    )
 
 }
