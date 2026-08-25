@@ -23,6 +23,9 @@ export default function Header() {
           >
             Search
           </Link>
+          <Link to="/ask">
+              Ask
+          </Link>
         </nav>
       </div>
     </header>
