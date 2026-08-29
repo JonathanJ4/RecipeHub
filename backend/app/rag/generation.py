@@ -2,7 +2,16 @@ import requests
 
 
 
-async def generation(query,queries:list[dict]):
+async def generation(query,recipes):
+        
+        context = "\n\n".join(
+        f"""
+        Recipe: {recipe.name}
+        Ingredients: {recipe.ingredients}
+        Instructions: {recipe.instructions}
+        """
+        for recipe in recipes)
+        
         base_url =  "http://127.0.0.1:1234/api/v1/chat"
 
         headers = {
@@ -16,7 +25,7 @@ async def generation(query,queries:list[dict]):
                         "type":"text",
                         "content":f"""  
 
-                                Retrieved chunks: {queries}
+                                Retrieved recipes: {context}
                                 User_query: {query}     
                         """
                 }
