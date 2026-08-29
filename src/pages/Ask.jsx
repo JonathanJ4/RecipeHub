@@ -10,7 +10,7 @@ export default function Ask(){
     const [error, setError] = useState('');
 
 
-    async function handle_submit(event){
+    async function handleSubmit(event){
 
         event.preventDefault();
         
@@ -21,7 +21,7 @@ export default function Ask(){
 
         try{
             const responseData = await fetchJson('/ask', {
-                method:'Post',
+                method:'POST',
                 headers:{'Content-Type':'application/json',},
                 body: JSON.stringify({
                     query: query.trim(),
