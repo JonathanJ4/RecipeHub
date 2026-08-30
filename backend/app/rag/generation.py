@@ -2,7 +2,7 @@ import requests
 
 
 
-async def generation(query,recipes, conversation_id =None):
+async def generation(query,recipes, conversation_id = None):
         
         context = "\n\n".join(
         f"""
@@ -32,10 +32,15 @@ async def generation(query,recipes, conversation_id =None):
         ],
         "system_prompt": "Answer the users question using the retrieved content",
         "store": True,
-}
+        
+        
+}                
+        
+        
         response = requests.post(
                 base_url,
                 headers=headers,
                 json=body
         )
+        
         return (response.json()['output'][1]['content'])
