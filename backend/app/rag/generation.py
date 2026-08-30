@@ -2,11 +2,11 @@ import requests
 
 
 
-async def generation(query,recipes):
+async def generation(query,recipes, conversation_id =None):
         
         context = "\n\n".join(
         f"""
-        Recipe: {recipe.name}
+        Recipe: {recipe.title}
         Ingredients: {recipe.ingredients}
         Instructions: {recipe.instructions}
         """
@@ -30,7 +30,8 @@ async def generation(query,recipes):
                         """
                 }
         ],
-        "system_prompt": "Answer the users question using the retrieved content"
+        "system_prompt": "Answer the users question using the retrieved content",
+        "store": True,
 }
         response = requests.post(
                 base_url,
