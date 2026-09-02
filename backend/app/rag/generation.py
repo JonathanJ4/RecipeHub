@@ -4,8 +4,8 @@ import requests
 async def generation(query, recipes, conversation_id=None):
     context = "\n\n".join(
         f"""Recipe: {recipe.title}
-Ingredients: {recipe.ingredients}
-Instructions: {recipe.instructions}"""
+        Ingredients: {recipe.ingredients}
+        Instructions: {recipe.instructions}"""
         for recipe in recipes
     )
 

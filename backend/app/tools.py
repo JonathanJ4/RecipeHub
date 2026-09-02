@@ -1,4 +1,16 @@
 from langchain.tools import tool
-from rag import retrieval
+from .rag.retrieval import retrieval
 
-retrieval_tool = tool(retrieval)
+
+
+@tool 
+async def retrieval_tool(query:str) -> str:
+    
+    recipes=await retrieval(query)
+    
+    return "\n\n".join(
+            f"""Title: {recipe.title}
+            Ingredients: {recipe.ingredients}
+            Instructions: {recipe.instructions}"""
+            for recipe in recipes
+    )
