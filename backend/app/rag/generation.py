@@ -3,7 +3,7 @@ from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import InMemorySaver
 from uuid import uuid4
 
-from ..tools import retrieval_tool
+from ..tools import retrieval_tool, web_search_tool
 
 memory = InMemorySaver()
 
@@ -17,10 +17,14 @@ model = ChatOpenAI(
 
 agent = create_agent(
     model=model,
-    tools=[retrieval_tool],
+    tools=[retrieval_tool, web_search_tool],
     system_prompt=(
-        "You are a recipe assistant. "
-        "Always search for relevant recipes before answering recipe questions."
+        "You are a helpful recipe assistant. "
+        "Use retrieval_tool when the user wants recipes, ingredients, or instructions "
+        "from the internal recipe database. "
+        "Use web_search_tool for current, recent, or external information. "
+        "Answer greetings and normal conversation directly without using a tool. "
+        "Base factual answers on the tool results and include source URLs when web search is used."
     ),
     checkpointer=memory,
 )
