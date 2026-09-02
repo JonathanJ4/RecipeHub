@@ -1,9 +1,11 @@
 from langchain.agents import create_agent
 from langchain_openai import ChatOpenAI
-
+from langgraph.checkpoint.memory import InMemorySaver
+from uuid import uuid4
 
 from ..tools import retrieval_tool
 
+memory = InMemorySaver()
 
 model = ChatOpenAI(
     model="qwen/qwen3-8b",
@@ -20,17 +22,32 @@ agent = create_agent(
         "You are a recipe assistant. "
         "Always search for relevant recipes before answering recipe questions."
     ),
-
+    checkpointer=memory,
 )
 
-async def generation(query: str) -> str:
-    result = await agent.ainvoke({
-        "messages": [
-            {
-                "role": "user",
-                "content": query,
-            }
-        ]
-    })
 
-    return result["messages"][-1].content
+async def generation(
+    query: str,
+    conversation_id: str | None = None,
+) -> tuple[str, str]:
+    if conversation_id is None:
+        conversation_id = str(uuid4())
+
+    result = await agent.ainvoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": query,
+                }
+            ]
+        },
+        config={
+            "configurable": {
+                "thread_id": conversation_id,
+            }
+        },
+    )
+
+    answer = result["messages"][-1].content
+    return answer, conversation_id
