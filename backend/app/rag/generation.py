@@ -13,9 +13,9 @@ Instructions: {recipe.instructions}"""
         "model": "qwen/qwen3-8b",
         "input": f"""Retrieved recipes:
 
-{context}
+        {context}
 
-User question: {query}""",
+        User question: {query}""",
         "system_prompt": "Answer the user's question using the retrieved recipes.",
         "store": True,
     }
@@ -24,7 +24,7 @@ User question: {query}""",
         body["previous_response_id"] = conversation_id
 
     response = requests.post(
-        "http://127.0.0.1:1234/api/v1/chat",
+        "http://127.0.0.1:1234/v1/chat/completions",
         headers={"Content-Type": "application/json"},
         json=body,
     )
