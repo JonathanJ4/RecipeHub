@@ -19,7 +19,12 @@ Instructions: {recipe.instructions}"""
 
 @tool
 def web_search_tool(query: str) -> str:
-    """Search the public web for current or external information not stored in the recipe database."""
+    """Search the public web for recipe follow-up information not stored in the internal database.
+
+    Use this for detailed cooking techniques, ingredient substitutions, additional
+    instructions, food-safety questions, or current external information. Do not
+    use it for initial recipe discovery; use the internal recipe tool instead.
+    """
     results = DDGS(timeout=10).text(
         query,
         backend="duckduckgo",
