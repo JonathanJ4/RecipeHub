@@ -17,12 +17,14 @@ class RouteDecision(BaseModel):
     search_query: str = Field(
         description="A standalone search query containing relevant conversation context."
     )
-    
+
+
 class RecipeState(MessagesState):
     route: str
     search_query: str
     context: str
-    
+
+
 model = ChatOpenAI(
     model="qwen/qwen3-8b",
     base_url="http://127.0.0.1:1234/v1",
@@ -33,7 +35,6 @@ model = ChatOpenAI(
 
 
 router_model = model.with_structured_output(RouteDecision)
-
 
 
 # Classifier node 
@@ -74,8 +75,8 @@ Create a standalone search_query. Replace vague words like "it",
         "search_query": decision.search_query,
         "context": "",
     }
-    
-    
+
+
 # Retrieval Node 
 async def search_recipes(state: RecipeState):
     results = await retrieval_tool.ainvoke(
@@ -87,9 +88,9 @@ async def search_recipes(state: RecipeState):
     return {
         "context": results,
     }
-    
-    
-#Web Search Node 
+
+
+# Web Search Node
 async def search_web(state: RecipeState):
     results = await web_search_tool.ainvoke(
         {
@@ -100,9 +101,9 @@ async def search_web(state: RecipeState):
     return {
         "context": results,
     }
-   
-   
-#Answer Node 
+
+
+# Answer Node
 async def generate_answer(state: RecipeState):
     response = await model.ainvoke(
         [
@@ -129,14 +130,34 @@ async def generate_answer(state: RecipeState):
     return {
         "messages": [response],
     }
-    
-def choose_route(state: RecipeState):
+
+
+def choose_route(
+    state: RecipeState,
+) -> Literal["recipe_search", "web_search", "normal_chat"]:
     return state["route"]
 
+
+memory = InMemorySaver()
 
 builder = StateGraph(RecipeState)
 builder.add_node("classify", classify_question)
 builder.add_node("recipe_search", search_recipes)
 builder.add_node("web_search", search_web)
 builder.add_node("answer", generate_answer)
+
 builder.add_edge(START, "classify")
+builder.add_conditional_edges(
+    "classify",
+    choose_route,
+    {
+        "recipe_search": "recipe_search",
+        "web_search": "web_search",
+        "normal_chat": "answer",
+    },
+)
+builder.add_edge("recipe_search", "answer")
+builder.add_edge("web_search", "answer")
+builder.add_edge("answer", END)
+
+graph = builder.compile(checkpointer=memory)
