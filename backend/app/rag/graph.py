@@ -17,3 +17,8 @@ class RouteDecision(BaseModel):
     search_query: str = Field(
         description="A standalone search query containing relevant conversation context."
     )
+    
+class RecipeState(MessagesState):
+    route: str
+    search_query: str
+    context: str
