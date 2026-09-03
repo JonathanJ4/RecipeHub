@@ -44,27 +44,27 @@ async def classify_question(state: RecipeState):
             SystemMessage(
                 content="""Classify the latest user message.
 
-Choose recipe_search when:
-- The user asks for recipe recommendations.
-- The user asks what they can make.
-- The user provides ingredients and wants matching recipes.
+                Choose recipe_search when:
+                - The user asks for recipe recommendations.
+                - The user asks what they can make.
+                - The user provides ingredients and wants matching recipes.
 
-Choose web_search when:
-- The user asks for more details about a recipe.
-- The user asks about ingredient substitutions.
-- The user asks about cooking techniques or food safety.
-- The answer may not exist in the internal recipe database.
+                Choose web_search when:
+                - The user asks for more details about a recipe.
+                - The user asks about ingredient substitutions.
+                - The user asks about cooking techniques or food safety.
+                - The answer may not exist in the internal recipe database.
 
-Choose normal_chat for:
-- Greetings.
-- Thanks.
-- Messages that do not require searching.
+                Choose normal_chat for:
+                - Greetings.
+                - Thanks.
+                - Messages that do not require searching.
 
-Use previous messages to understand follow-up questions.
+                Use previous messages to understand follow-up questions.
 
-Create a standalone search_query. Replace vague words like "it",
-"that recipe", and "that ingredient" with details from the conversation.
-"""
+                Create a standalone search_query. Replace vague words like "it",
+                "that recipe", and "that ingredient" with details from the conversation.
+                """
             ),
             *state["messages"],
         ]
@@ -132,9 +132,7 @@ async def generate_answer(state: RecipeState):
     }
 
 
-def choose_route(
-    state: RecipeState,
-) -> Literal["recipe_search", "web_search", "normal_chat"]:
+def choose_route(state: RecipeState) -> Literal["recipe_search", "web_search", "normal_chat"]:
     return state["route"]
 
 
