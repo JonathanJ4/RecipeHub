@@ -22,3 +22,81 @@ class RecipeState(MessagesState):
     route: str
     search_query: str
     context: str
+    
+model = ChatOpenAI(
+    model="qwen/qwen3-8b",
+    base_url="http://127.0.0.1:1234/v1",
+    api_key="lm-studio",
+    temperature=0,
+)
+
+
+
+router_model = model.with_structured_output(RouteDecision)
+
+
+
+# Classifier node 
+async def classify_question(state: RecipeState):
+    decision = await router_model.ainvoke(
+        [
+            SystemMessage(
+                content="""Classify the latest user message.
+
+Choose recipe_search when:
+- The user asks for recipe recommendations.
+- The user asks what they can make.
+- The user provides ingredients and wants matching recipes.
+
+Choose web_search when:
+- The user asks for more details about a recipe.
+- The user asks about ingredient substitutions.
+- The user asks about cooking techniques or food safety.
+- The answer may not exist in the internal recipe database.
+
+Choose normal_chat for:
+- Greetings.
+- Thanks.
+- Messages that do not require searching.
+
+Use previous messages to understand follow-up questions.
+
+Create a standalone search_query. Replace vague words like "it",
+"that recipe", and "that ingredient" with details from the conversation.
+"""
+            ),
+            *state["messages"],
+        ]
+    )
+
+    return {
+        "route": decision.route,
+        "search_query": decision.search_query,
+        "context": "",
+    }
+    
+    
+# Retrieval Node 
+async def search_recipes(state: RecipeState):
+    results = await retrieval_tool.ainvoke(
+        {
+            "query": state["search_query"],
+        }
+    )
+
+    return {
+        "context": results,
+    }
+    
+    
+#Web Search Node 
+async def search_web(state: RecipeState):
+    results = await web_search_tool.ainvoke(
+        {
+            "query": state["search_query"],
+        }
+    )
+
+    return {
+        "context": results,
+    }
